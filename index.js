@@ -1,8 +1,7 @@
 const express = require('express')
-var ipInfo = require("ip-info-finder");
 const app = express()
 const port = process.env.PORT || 3030
-const IP = require('ip');
+const requestIP = require('request-ip');
 const axios = require('axios');
 const API_KEY = 'b0fad41bb6ee4d0fbcf7fd4f35bcc397';
 const URL = 'https://ipgeolocation.abstractapi.com/v1/?api_key=' + API_KEY;
@@ -14,7 +13,7 @@ const sendAPIRequest = async (ipAddress) => {
 }
 
 app.get('/', async (req, res) => {
-    const ipAddress = IP.address();
+    const ipAddress = requestIP.getClientIp(req);;
     const ipAddressInformation = await sendAPIRequest(ipAddress);
     res.send({ip:ipAddress, data:ipAddressInformation})
 })
